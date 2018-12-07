@@ -76,6 +76,15 @@ function getItemIndexFromElement(item) {
     .attr('data-item-index');
   return parseInt(itemIndexString, 10);
 }
+function toggleNeededVsAll(){
+  STORE.map((item, index) =>{
+    if (item[index].checked === false) {
+      generateShoppingItemsString(item);
+    }
+  });
+  console.log('`toggleNeededVsAll` ran');
+
+}
 
 function handleItemCheckClicked() {
   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
@@ -115,6 +124,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleNeededVsAllButton();
+  toggleNeededVsAll();
 }
 
 // when the page loads, call `handleShoppingList`
