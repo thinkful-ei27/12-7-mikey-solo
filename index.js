@@ -1,14 +1,13 @@
 'use strict';
 /* global $*/
-const STORE = 
-
-  [
+const STORE = {
+  item : [
     {name: 'apples', checked: false},
     {name: 'oranges', checked: false},
     {name: 'milk', checked: true},
     {name: 'bread', checked: false}
-  ];
-
+  ]
+};
 
 function generateItemElement(item, itemIndex, template) {
   return `
@@ -79,11 +78,14 @@ function getItemIndexFromElement(item) {
   return parseInt(itemIndexString, 10);
 }
 function toggleNeededVsAll(){
+  const limitedArray =[]
   STORE.filter((item  =>{
     if (item.checked === false) {
-      console.log(item.checked);
-      generateItemElement(item);
+      
+      limitedArray.push(item);
     }
+    console.log(limitedArray);
+    renderShoppingList(limitedArray);
   }));
   // console.log('`toggleNeededVsAll` ran');
 
