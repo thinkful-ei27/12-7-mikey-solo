@@ -1,11 +1,13 @@
 'use strict';
 /* global $*/
-const STORE = [
-  {name: 'apples', checked: false},
-  {name: 'oranges', checked: false},
-  {name: 'milk', checked: true},
-  {name: 'bread', checked: false}
-];
+const STORE = 
+
+  [
+    {name: 'apples', checked: false},
+    {name: 'oranges', checked: false},
+    {name: 'milk', checked: true},
+    {name: 'bread', checked: false}
+  ];
 
 
 function generateItemElement(item, itemIndex, template) {
@@ -77,12 +79,13 @@ function getItemIndexFromElement(item) {
   return parseInt(itemIndexString, 10);
 }
 function toggleNeededVsAll(){
-  STORE.map((item, index) =>{
-    if (item[index].checked === false) {
-      generateShoppingItemsString(item);
+  STORE.filter((item  =>{
+    if (item.checked === false) {
+      console.log(item.checked);
+      generateItemElement(item);
     }
-  });
-  console.log('`toggleNeededVsAll` ran');
+  }));
+  // console.log('`toggleNeededVsAll` ran');
 
 }
 
@@ -106,10 +109,14 @@ function handleDeleteItemClicked() {
 
 function handleNeededVsAllButton(){
   console.log('`handleNeededVsAllButton` ran ');
-  $('.container').on('click', '.js-view-all-button', function(event){
-    
-    
-    console.log(event, 'All button clicked');
+  $('.container').on('click', '.js-view-all-button', function(){
+    const totalList = generateShoppingItemsString(STORE);
+    const neededList = toggleNeededVsAll(STORE);  
+    totalList ? renderShoppingList(neededList): 
+      renderShoppingList(totalList);
+   
+
+    // console.log(event, 'All button clicked');
   });
 //checked is true, removes from dom
 }
@@ -124,7 +131,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleNeededVsAllButton();
-  toggleNeededVsAll();
+
 }
 
 // when the page loads, call `handleShoppingList`
