@@ -70,7 +70,6 @@ function deleteItemFromList(itemIndex) {
   console.log(STORE);
 }
 
-
 function getItemIndexFromElement(item) {
   const itemIndexString = $(item)
     .closest('.js-item-index-element')
@@ -87,7 +86,6 @@ function handleItemCheckClicked() {
   });
 }
 
-
 function handleDeleteItemClicked() {
   $('.js-shopping-list').on('click', '.js-item-delete', function (event) {
     console.log('`handleDeleteItemClicked` ran');
@@ -95,6 +93,16 @@ function handleDeleteItemClicked() {
     deleteItemFromList(itemIndex);
     renderShoppingList();
   });
+}
+
+function handleNeededVsAllButton(){
+  console.log('`handleNeededVsAllButton` ran ');
+  $('.container').on('click', '.js-view-all-button', function(event){
+    
+    
+    console.log(event, 'All button clicked');
+  });
+//checked is true, removes from dom
 }
 
 // this function will be our callback when the page loads. it's responsible for
@@ -106,6 +114,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleNeededVsAllButton();
 }
 
 // when the page loads, call `handleShoppingList`
