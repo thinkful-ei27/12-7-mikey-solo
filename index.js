@@ -58,7 +58,7 @@ function addItemToShoppingList(itemName) {
 }
 
 function handleNewItemSubmit() {
-  $('#js-shopping-list-form').submit(function(event) {
+  $('#js-shopping-list-form .js-submit-entry').submit(function(event) {
     event.preventDefault();
     if(Object.keys(STORE).length > 1){ 
       delete STORE.item2; }
@@ -68,6 +68,14 @@ function handleNewItemSubmit() {
     renderShoppingList();
   });
 }
+
+function handleSearchSubmit() {
+  console.log('`handleSearchSubmit` ran');
+  $('#js-shopping-list-form .js-search-entry').submit(function(event) {
+ console.log('clicked search button');
+})
+}
+// the id+class plan isnt working right, gotta plan something else .on('submit','.higherupthe=cascade' function())
 
 function toggleCheckedForListItem(itemIndex) {
   console.log('Toggling checked property for item at index ' + itemIndex);
@@ -140,6 +148,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleNeededVsAllButton();
+  handleSearchSubmit();
 
 }
 
