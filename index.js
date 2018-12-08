@@ -72,11 +72,13 @@ function handleNewItemSubmit() {
 function toggleCheckedForListItem(itemIndex) {
   console.log('Toggling checked property for item at index ' + itemIndex);
   STORE.item[itemIndex].checked = !STORE.item[itemIndex].checked;
+  delete STORE.item2;
 }
 
 function deleteItemFromList(itemIndex) {
   console.log('deleting item...', itemIndex);
-  STORE['item'].splice(itemIndex, 1);
+  STORE.item.splice(itemIndex, 1);
+  delete STORE.item2;
   console.log(STORE);
 }
 
