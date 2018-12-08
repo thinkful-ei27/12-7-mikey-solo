@@ -11,12 +11,12 @@ const STORE = {
   ],
 
 };
-console.log(STORE[Object.keys(STORE)[Object.keys(STORE).length-1]]);
+// console.log(STORE[Object.keys(STORE)[Object.keys(STORE).length-1]]);
 console.log(Object.keys(STORE).length);
 
 
 function generateItemElement(item, itemIndex, template) {
-  // console.log('look at me');
+
   return `
     <li class="js-item-index-element" data-item-index="${itemIndex}">
       <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
@@ -34,10 +34,7 @@ function generateItemElement(item, itemIndex, template) {
 
 
 function generateShoppingItemsString(shoppingList) {
-  console.log('Generating shopping list element');
-
   const items = shoppingList.map((item, index) => generateItemElement(item, index));
- 
   return items.join('');
 }
 
@@ -45,10 +42,10 @@ function generateShoppingItemsString(shoppingList) {
 function renderShoppingList() {
   const listIWant = STORE[Object.keys(STORE)[Object.keys(STORE).length-1]];
   const shoppingListItemsString = generateShoppingItemsString(listIWant);
-  console.log(shoppingListItemsString);
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
   console.log('`renderShoppingList` ran');
+  console.log(Object.keys(STORE).length);
 }
 
 
@@ -57,12 +54,14 @@ function renderShoppingList() {
 function addItemToShoppingList(itemName) {
   console.log(`Adding "${itemName}" to shopping list`);
   STORE.item.push({name: itemName, checked: false});
+ 
 }
 
 function handleNewItemSubmit() {
   $('#js-shopping-list-form').submit(function(event) {
     event.preventDefault();
-    console.log('`handleNewItemSubmit` ran');
+    if(Object.keys(STORE).length > 1){ 
+      delete STORE.item2; }
     const newItemName = $('.js-shopping-list-entry').val();
     $('.js-shopping-list-entry').val('');
     addItemToShoppingList(newItemName);
@@ -88,15 +87,12 @@ function getItemIndexFromElement(item) {
   return parseInt(itemIndexString, 10);
 }
 function toggleNeededVsAll(){
-  const limitedArray = []
+  const limitedArray = [];
   STORE.item.map((item  =>{
     if (item.checked === false) {
-      
       limitedArray.push(item);
     }
-    
     STORE.item2 = limitedArray;
-
     renderShoppingList();
   }));
   // console.log('`toggleNeededVsAll` ran');
@@ -122,15 +118,12 @@ function handleDeleteItemClicked() {
 }
 
 function handleNeededVsAllButton(){
-  console.log('`handleNeededVsAllButton` ran ');
   $('.container').on('click', '.js-view-all-button', function(){
-    
     const totalList = Object.keys(STORE).length === 1;
     const neededList = toggleNeededVsAll(STORE.item);  
     totalList ? renderShoppingList(neededList): 
       delete STORE[Object.keys(STORE)[Object.keys(STORE).length-1]];
     renderShoppingList();
-    // console.log(event, 'All button clicked');
   });
 //checked is true, removes from dom
 }
