@@ -58,7 +58,7 @@ function addItemToShoppingList(itemName) {
 }
 
 function handleNewItemSubmit() {
-  $('#js-shopping-list-form .js-submit-entry').submit(function(event) {
+  $('#js-shopping-list-form').submit(function(event) {
     event.preventDefault();
     if(Object.keys(STORE).length > 1){ 
       delete STORE.item2; }
@@ -70,12 +70,21 @@ function handleNewItemSubmit() {
 }
 
 function handleSearchSubmit() {
-  console.log('`handleSearchSubmit` ran');
-  $('#js-shopping-list-form .js-search-entry').submit(function(event) {
- console.log('clicked search button');
-})
+
+  $('.js-shopping-list-entry').keyup(function() {
+    // if(Object.keys(STORE).length > 1){ 
+    //   delete STORE.item2; }
+    const searchTerm = $('.js-shopping-list-entry').val();
+    STORE.item.filter(commodity =>{
+      if (commodity.name.includes(searchTerm)){
+        console.log(commodity);
+
+      }
+    });
+  });
 }
-// the id+class plan isnt working right, gotta plan something else .on('submit','.higherupthe=cascade' function())
+
+
 
 function toggleCheckedForListItem(itemIndex) {
   console.log('Toggling checked property for item at index ' + itemIndex);
@@ -98,14 +107,13 @@ function getItemIndexFromElement(item) {
 }
 function toggleNeededVsAll(){
   const limitedArray = [];
-  STORE.item.map((item  =>{
-    if (item.checked === false) {
-      limitedArray.push(item);
+  STORE.item.map(( commodity  =>{
+    if (commodity.checked === false) {
+      limitedArray.push(commodity);
     }
     STORE.item2 = limitedArray;
     renderShoppingList();
   }));
-  // console.log('`toggleNeededVsAll` ran');
 
 }
 
