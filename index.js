@@ -27,6 +27,9 @@ function generateItemElement(item, itemIndex, template) {
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
         </button>
+         <button class="shopping-item-delete js-item-edit">
+             <span class="button-label">edit</span>
+        </button>
       </div>
     </li>`;
 
@@ -70,27 +73,31 @@ function handleNewItemSubmit() {
 }
 
 function handleSearchSubmit() {
-
   $('.js-shopping-list-entry').keyup(function() {
-    // if(Object.keys(STORE).length > 1){ 
-    //   delete STORE.item2; }
+    const limitedArray = [];
     const searchTerm = $('.js-shopping-list-entry').val();
     STORE.item.filter(commodity =>{
       if (commodity.name.includes(searchTerm)){
         console.log(commodity);
-
+        limitedArray.push(commodity);
       }
+      STORE.item2 = limitedArray;
+      renderShoppingList();
     });
   });
 }
-
+// handleSearch submit works, the item2 object sticks around until 
+// another action is taken by the user. 
 
 
 function toggleCheckedForListItem(itemIndex) {
   console.log('Toggling checked property for item at index ' + itemIndex);
-  STORE.item[itemIndex].checked = !STORE.item[itemIndex].checked;
-  delete STORE.item2;
+  STORE.length >  1 ? delete STORE.item2 :
+    STORE.item[itemIndex].checked = !STORE.item[itemIndex].checked;
 }
+// altered toggleCheckedForLastItem to delete item2 before it toggles instead of after;
+// this gets rid of the bug where it would delete toggle at index of item and
+// then delete item2 (check button dissasociated from item in search mode)
 
 function deleteItemFromList(itemIndex) {
   console.log('deleting item...', itemIndex);
