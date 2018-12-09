@@ -106,11 +106,11 @@ function deleteItemFromList(itemIndex) {
   console.log(STORE);
 }
 
-function getItemIndexFromElement(item) {
-  const itemIndexString = $(item)
+function getItemIndexFromElement(commodity) {
+  const commodityIndexString = $(commodity)
     .closest('.js-item-index-element')
     .attr('data-item-index');
-  return parseInt(itemIndexString, 10);
+  return parseInt(commodityIndexString, 10);
 }
 function toggleNeededVsAll(){
   const limitedArray = [];
@@ -152,6 +152,21 @@ function handleNeededVsAllButton(){
   });
 //checked is true, removes from dom
 }
+function insertInputToItem(item , itemIndex){
+  return `
+             <form id="js-shopping-list-form">
+            <label for="shopping-list-entry">Add an item</label>
+            <input type="text" name="shopping-list-entry" class="js-shopping-list-entry" placeholder="${item.name}">
+            <button type="submit" class="js-submit-entry">Add item</button>`;
+}
+
+function handleEditItemClicked(){
+  $('.js-shopping-list').on('click','.js-item-edit',function(event){
+    console.log('editbutton clicked');
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    insertInputToItem(itemIndex);
+  });
+}
 
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
@@ -164,6 +179,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleNeededVsAllButton();
   handleSearchSubmit();
+  handleEditItemClicked();
 
 }
 
