@@ -161,69 +161,47 @@ function getEditItemIndexFromElement(commodity) {
 
 
 
-function handleEditItemSubmit() {
-  $('#js-edit-list-form').submit(function(event) {
-    event.preventDefault();
-    const itemIndex = getEditItemIndexFromElement(event.currentTarget);
-    // if(Object.keys(STORE).length > 1){ 
-    //   delete STORE.item2; 
-    const newItemName = $('.js-shopping-list-entry').val();
-    STORE.item.splice(itemIndex, 1);
-    addItemToShoppingList(newItemName);
-    renderShoppingList();
-  });
-
-}
-
 function generateEditItemString(item , itemIndex){
   console.log(item ,'edited item string ran');
-  return ` <li class="js-item-index-element" data-item-index="${itemIndex}">
-             <form id="js-edit-list-form" data-item-index="${itemIndex}">
-            <label for="shopping-list-entry">Add an item</label>
-            <input type="text" name="shopping-list-entry" class="js-shopping-list-entry" placeholder="${item.name}">
-            <button type="submit" class="js-finish-entry">finished edit</button>
-            </form>
-            </li>`;
+
+  return ` <div class="js-item-index-element" data-item-index="${itemIndex}">
+            
+            <label for="edit-item">Edit item '${item.name}' above:</label>
+            
+            </div>`;
             
 }
-function findNameOfElement(commodity){
-  const commodityIndexString = $(commodity)
-    .closest('js-item-index-element')
-    .find('.shopping-item').text();
-  console.log('findNameOfElement ran');
-  return commodityIndexString;
 
-
-}
 function renderEditShoppingList(itemIndex) {
   const listIWant = STORE[Object.keys(STORE)[Object.keys(STORE).length-1]];
   const shoppingListItemsString = generateEditItemString(listIWant[itemIndex]);
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
+  $('#js-shopping-list-form').off('key-up');
   console.log('`renderEditShoppingList` ran');
   console.log(Object.keys(STORE).length);
 
 }
 
 function handleEditItemClicked(){
-  $('.js-shopping-list').on('click','.js-item-edit',function(event){
+  $('.js-shopping-list').on('click','.js-item-edit',function(){
     if(Object.keys(STORE).length > 1){ 
-      STORE.item.map( commodity => {
-        const editClick = findNameOfElement(event.currentTarget);
-        if(commodity.name === editClick){
-          const itemIndex = STORE.item.indexOf(commodity);
-          console.log(itemIndex);
-        }
-        else console.log('not working');
-      });
-      console.log('editbuttonclicked ran');
+      delete STORE.item2; 
+      renderShoppingList();
     }
     else{const itemIndex = getItemIndexFromElement(this);
       console.log('editeditemindex', itemIndex);
-      renderEditShoppingList(itemIndex);}
-
+    
+      renderEditShoppingList(itemIndex);
+      STORE.item.splice(itemIndex, 1);}
   });
 }
+
+
+
+
+
+
 
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
@@ -237,9 +215,33 @@ function handleShoppingList() {
   handleNeededVsAllButton();
   handleSearchSubmit();
   handleEditItemClicked();
-  handleEditItemSubmit();
 
 }
 
 // when the page loads, call `handleShoppingList`
 $(handleShoppingList);
+
+
+
+// function handleEditItemSubmit() {
+//   $('#js-edit-list-form').submit(function(event) {
+//     // event.preventDefault();
+//     alert( event.isDefaultPrevented() );
+//     console.log('handlesubmitedit clicked');
+//     const itemIndex = getEditItemIndexFromElement(event.currentTarget);
+
+    // if(Object.keys(STORE).length > 1){ 
+    //   delete STORE.item2; 
+//     const newItemName = $(event.currentTarget).find('.js-shopping-list-entry').val();
+//     STORE.item.splice(itemIndex, 1);
+//     addItemToShoppingList(newItemName);
+//     renderShoppingList();
+//   });
+
+// }
+// function findNameOfElement(commodity){
+//   const commodityIndexString = $(commodity)
+//     .closest('js-item-index-element')
+//     .find('.shopping-item').text();
+//   console.log('findNameOfElement ran');
+//   return commodityIndexString;
