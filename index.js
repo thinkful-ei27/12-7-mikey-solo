@@ -152,36 +152,76 @@ function handleNeededVsAllButton(){
   });
 //checked is true, removes from dom
 }
+function getEditItemIndexFromElement(commodity) {
+  const commodityIndexString = $(commodity)
+    .closest('#js-edit-list-form')
+    .attr('data-item-index');
+  return parseInt(commodityIndexString, 10);
+}
+
+
+
+function handleEditItemSubmit() {
+  $('#js-edit-list-form').submit(function(event) {
+    event.preventDefault();
+    const itemIndex = getEditItemIndexFromElement(event.currentTarget);
+    // if(Object.keys(STORE).length > 1){ 
+    //   delete STORE.item2; 
+    const newItemName = $('.js-shopping-list-entry').val();
+    STORE.item.splice(itemIndex, 1);
+    addItemToShoppingList(newItemName);
+    renderShoppingList();
+  });
+
+}
+
 function generateEditItemString(item , itemIndex){
+  console.log(item ,'edited item string ran');
   return ` <li class="js-item-index-element" data-item-index="${itemIndex}">
-             <form id="js-shopping-list-form">
+             <form id="js-edit-list-form" data-item-index="${itemIndex}">
             <label for="shopping-list-entry">Add an item</label>
             <input type="text" name="shopping-list-entry" class="js-shopping-list-entry" placeholder="${item.name}">
-            <button type="submit" class="js-submit-entry">Add item</button>
+            <button type="submit" class="js-finish-entry">finished edit</button>
+            </form>
             </li>`;
+            
 }
 function findNameOfElement(commodity){
   const commodityIndexString = $(commodity)
     .closest('js-item-index-element')
-    .find('.shopping-item').text('');
+    .find('.shopping-item').text();
   console.log('findNameOfElement ran');
   return commodityIndexString;
+
+
+}
+function renderEditShoppingList(itemIndex) {
+  const listIWant = STORE[Object.keys(STORE)[Object.keys(STORE).length-1]];
+  const shoppingListItemsString = generateEditItemString(listIWant[itemIndex]);
+  // insert that HTML into the DOM
+  $('.js-shopping-list').html(shoppingListItemsString);
+  console.log('`renderEditShoppingList` ran');
+  console.log(Object.keys(STORE).length);
+
 }
 
 function handleEditItemClicked(){
   $('.js-shopping-list').on('click','.js-item-edit',function(event){
     if(Object.keys(STORE).length > 1){ 
-      STORE.item.forEach( commodity => {
+      STORE.item.map( commodity => {
         const editClick = findNameOfElement(event.currentTarget);
         if(commodity.name === editClick){
           const itemIndex = STORE.item.indexOf(commodity);
           console.log(itemIndex);
         }
+        else console.log('not working');
       });
       console.log('editbuttonclicked ran');
     }
-    else{const itemIndex = getItemIndexFromElement(event.currentTarget);
-      console.log(itemIndex);}
+    else{const itemIndex = getItemIndexFromElement(this);
+      console.log('editeditemindex', itemIndex);
+      renderEditShoppingList(itemIndex);}
+
   });
 }
 
@@ -197,6 +237,7 @@ function handleShoppingList() {
   handleNeededVsAllButton();
   handleSearchSubmit();
   handleEditItemClicked();
+  handleEditItemSubmit();
 
 }
 
