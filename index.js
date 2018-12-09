@@ -152,19 +152,36 @@ function handleNeededVsAllButton(){
   });
 //checked is true, removes from dom
 }
-function insertInputToItem(item , itemIndex){
-  return `
+function generateEditItemString(item , itemIndex){
+  return ` <li class="js-item-index-element" data-item-index="${itemIndex}">
              <form id="js-shopping-list-form">
             <label for="shopping-list-entry">Add an item</label>
             <input type="text" name="shopping-list-entry" class="js-shopping-list-entry" placeholder="${item.name}">
-            <button type="submit" class="js-submit-entry">Add item</button>`;
+            <button type="submit" class="js-submit-entry">Add item</button>
+            </li>`;
+}
+function findNameOfElement(commodity){
+  const commodityIndexString = $(commodity)
+    .closest('js-item-index-element')
+    .find('.shopping-item').text('');
+  console.log('findNameOfElement ran');
+  return commodityIndexString;
 }
 
 function handleEditItemClicked(){
   $('.js-shopping-list').on('click','.js-item-edit',function(event){
-    console.log('editbutton clicked');
-    const itemIndex = getItemIndexFromElement(event.currentTarget);
-    insertInputToItem(itemIndex);
+    if(Object.keys(STORE).length > 1){ 
+      STORE.item.forEach( commodity => {
+        const editClick = findNameOfElement(event.currentTarget);
+        if(commodity.name === editClick){
+          const itemIndex = STORE.item.indexOf(commodity);
+          console.log(itemIndex);
+        }
+      });
+      console.log('editbuttonclicked ran');
+    }
+    else{const itemIndex = getItemIndexFromElement(event.currentTarget);
+      console.log(itemIndex);}
   });
 }
 
